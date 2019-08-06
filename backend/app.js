@@ -1,9 +1,11 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(cors)
 
 let db = [
     {
@@ -12,11 +14,12 @@ let db = [
     }
 ]
 
-app.get('/', (req, res) => {
-    console.log(req.query)
-    if (req.query.code) {
+app.get('/:code', (req, res) => {
+    console.log("huselt irev")
+    if (req.params.code) {
         for (let i = 0; i < db.length; i++) {
-            if (db[i].code == req.query.code) {
+            if (db[i].code == req.params.code) {
+                // console.log(db[i])
                 res.send(db[i])
             }
         }

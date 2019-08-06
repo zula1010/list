@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import Items from './Items'
 import Input from './Input'
+import axios from './axios'
 import './App.css';
 
 class App extends Component {
   state = {
-    "code": "Julia",
-    listOfData: ["a", "b", "c"],
+    "code": "",
+    listOfData: [],
     "newValue": ""
+  }
+  componentDidMount() {
+    axios.get('/Julia').then(res => {
+      console.log("amjilttai")
+      this.setState({ code: "Julia", listOfData: res.data })
+    }).catch(err => console.log("alda"))
   }
 
 
@@ -15,11 +22,8 @@ class App extends Component {
     this.setState({ newValue: e.target.value })
   }
   saveItem = () => {
-    console.log(this.state.newValue)
     let updatedDatas = [...this.state.listOfData]
-    console.log(updatedDatas)
     updatedDatas.push(this.state.newValue)
-    console.log(updatedDatas)
     this.setState({ listOfData: updatedDatas })
   }
 
