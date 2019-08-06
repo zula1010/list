@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Items from './Items'
 import Input from './Input'
-import axios from './axios'
+import axios from 'axios'
 import './App.css';
 
 class App extends Component {
@@ -11,10 +11,18 @@ class App extends Component {
     "newValue": ""
   }
   componentDidMount() {
-    axios.get('/Julia').then(res => {
-      console.log("amjilttai")
-      this.setState({ code: "Julia", listOfData: res.data })
-    }).catch(err => console.log("alda"))
+    axios.get('http://localhost:3030/?code=Julia').then(response => {
+      console.log(response.data)
+      this.setState({ code: response.data.code, listOfData: response.data.data })
+    }).catch(err => console.log(err))
+
+    // fetch('http://localhost:3030/?code=Julia')
+    //   .then(result => { return result.json() })
+    //   .then(data => {
+    //     console.log("amjilttai")
+    //     console.log(data)
+    //     this.setState({ code: data.code, listOfData: data.data })
+    //   }).catch(err => console.log("alda"))
   }
 
 
@@ -22,9 +30,14 @@ class App extends Component {
     this.setState({ newValue: e.target.value })
   }
   saveItem = () => {
-    let updatedDatas = [...this.state.listOfData]
-    updatedDatas.push(this.state.newValue)
-    this.setState({ listOfData: updatedDatas })
+    let data = { "code": this.state.code, "addValue": this.state.newValue }
+    // let updatedDatas = [...this.state.listOfData]
+    // updatedDatas.push(this.state.newValue)
+    // this.setState({ listOfData: updatedDatas })
+    axios.post('http://localhost:3030/', data).then(response => {
+      console.log(response.data)
+      this.setState({ code: response.data.code, listOfData: response.data.data })
+    })
   }
 
 
