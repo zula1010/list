@@ -29,7 +29,7 @@ app.get('/', async (req, res) => {
         db[req.session.code] = { name: req.session.code, data: [] }
     }
 
-    let html = "<html><head><style>ul {list-style-type:none; padding :0px; margin :0px;} body {color: #254572;  text-align:center; margin:auto; padding:30px;} .data, .save{cursor: pointer; border-color: #254572;color: #254572;padding :5px; margin :0px; border-radius:5px;} .data:hover {background-color: #7ec5b9;border-color: #7ec5b9;color: white;}</style></head><body><div><img src = '/logo.png' alt='backbarLogo'><h3>Your code: <a href='/'>"
+    let html = "<html><head><style>ul {list-style-type:none; padding :0px; margin :0px;} body {color: #254572;  text-align:center; margin:auto; padding:30px;} .data, .save{cursor: pointer; border-color: #254572;color: #254572;padding :5px; margin :0px; border-radius:5px;} .data:hover {background-color: #7ec5b9;border-color: #7ec5b9;color: white;} a:link, a:visited{color: #254572;} a:hover{color:#7ec5b9}</style></head><body><div><img src = '/logo.png' alt='backbarLogo'><h3>Your code: <a href='/'>"
     html += db[req.session.code].name + "</a></h3><ul>"
 
     db[req.session.code].data.forEach((data, index) => { html += "<li><form method='post' action='/delete/" + index + "'><button class='data'>Data: " + data + "</button></form></li>" })
