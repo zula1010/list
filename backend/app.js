@@ -9,15 +9,13 @@ app.use(session({ secret: "Julia" }));
 
 let db = {};
 
-
-
 app.get('/', async (req, res) => {
-    console.log("get huselt irev")
     if (req.query.code) {
         req.session.code = req.query.code
         res.redirect('/')
     }
     if (!req.session.code) {
+        //generating 32 character lowercase hexadecimal random code
         code = ""
         var letters = "0123456789ABCDEF";
         for (var i = 0; i < 32; i++)
@@ -25,33 +23,33 @@ app.get('/', async (req, res) => {
         req.session.code = code
 
     }
-    console.log(req.session)
     if (!(req.session.code in db)) {
-        console.log("to create new db ")
+        //creating new code in db
         db[req.session.code] = { name: req.session.code, data: [] }
     }
-    console.log(db[req.session.code])
-    let html = '<html><body><div><h1>Backbar Recruiting</h1><h3>Your code:'
-    html += db[req.session.code].name + '</h3><ul>'
 
+    let html = "<html><body><div><h1>Backbar Recruiting</h1><h3>Your code: <a href='/'>"
+    html += db[req.session.code].name + "</a></h3><ul>"
 
-    for (let i = 0; i < db[req.session.code].data.length; i++) {
-        let li = '<li>Data: ' + db[req.session.code].data[i] + '</li>'
-        html += li
-    }
-    html += '</ul>'
-    html += "<form method = 'post'><input name='val' type='text'/><button type='submit'>Save entry</button></form>"
-    html += '</div></body></html>'
+    db[req.session.code].data.forEach(li => { html += "<li>Data: " + li + "</li>" })
+
+    html += "</ul><form method = 'post'>New: <input name='val' type='text'/><button type='submit'>Save entry</button></form></div></body></html>"
     await res.send(html)
 
 })
 app.post('/', (req, res) => {
-    console.log("post huselt irev")
-    if (req.body) {
-        console.log(req.body)
-        db[req.session.code].data.push(req.body.val)
+
+    if (req.body.val == "") {
+        res.send("Empty entry! to return <a href='/'>Click me!</a>")
     }
-    res.redirect('/')
+    else if (db[req.session.code].data.includes(req.body.val)) {
+        res.send("Duplicated entry! to return <a href='/'>Click me!</a>")
+    }
+    else {
+        db[req.session.code].data.push(req.body.val)
+        db[req.session.code].data.sort()
+        res.redirect('/')
+    }
 })
 
 app.listen(3030, () => console.log("app is working on port 3030"))
