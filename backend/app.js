@@ -6,6 +6,7 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(session({ secret: "Julia" }));
+app.use(express.static(__dirname));
 
 let db = {};
 
@@ -28,12 +29,12 @@ app.get('/', async (req, res) => {
         db[req.session.code] = { name: req.session.code, data: [] }
     }
 
-    let html = "<html><body><div><h1>Backbar Recruiting</h1><h3>Your code: <a href='/'>"
+    let html = "<html><head><style>ul {list-style-type:none; padding :0px; margin :0px;} body {color: #254572;  text-align:center; margin:auto; padding:30px;} .data, .save{cursor: pointer; border-color: #254572;color: #254572;padding :5px; margin :0px; border-radius:5px;} .data:hover {background-color: #7ec5b9;border-color: #7ec5b9;color: white;}</style></head><body><div><img src = '/logo.png' alt='backbarLogo'><h3>Your code: <a href='/'>"
     html += db[req.session.code].name + "</a></h3><ul>"
 
-    db[req.session.code].data.forEach(li => { html += "<li>Data: " + li + "</li>" })
+    db[req.session.code].data.forEach((data, index) => { html += "<li><form method='post' action='/delete/" + index + "'><button class='data'>Data: " + data + "</button></form></li>" })
 
-    html += "</ul><form method = 'post'>New: <input name='val' type='text'/><button type='submit'>Save entry</button></form></div></body></html>"
+    html += "</ul><form method = 'post'>New: <input class ='save' name='val' type='text'/><button class='save' type='submit'>Save entry</button></form></div></body></html>"
     await res.send(html)
 
 })
@@ -50,6 +51,12 @@ app.post('/', (req, res) => {
         db[req.session.code].data.sort()
         res.redirect('/')
     }
+})
+app.post('/delete/:index', (req, res) => {
+    console.log("delete clicked")
+    console.log(req.params.index)
+    db[req.session.code].data.splice(req.params.index, 1)
+    res.redirect('/')
 })
 
 app.listen(3030, () => console.log("app is working on port 3030"))
