@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const session = require('express-session');
-
+const port = process.env.PORT || 3000
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -59,4 +59,4 @@ app.post('/delete/:index', (req, res) => {
     res.redirect('/')
 })
 
-app.listen(3030, () => console.log("app is working on port 3030"))
+app.listen(port, () => console.log("app is working on port " + port))
