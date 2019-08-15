@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const session = require('express-session');
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 const app = express()
 
 //init the app
@@ -62,4 +62,4 @@ app.post('/delete/:index', (req, res) => {
     res.redirect('/')
 })
 
-app.listen(process.env.PORT || port, () => console.log("app is working on port " + port))
+app.listen(port, () => console.log("app is working on port " + port))
