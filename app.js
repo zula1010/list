@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 const session = require('express-session');
 const port = process.env.PORT || 3000
 const app = express()
+
+//init the app
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(session({ secret: "Julia" }));
