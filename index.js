@@ -9,14 +9,13 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(session({ secret: "Julia" }));
-app.use(express.static(__dirname));
 
 let db = {};
 
 app.get('list-app-backbar.herokuapp.com/', async (req, res) => {
     if (req.query.code) {
         req.session.code = req.query.code
-        res.redirect('/')
+        res.redirect('list-app-backbar.herokuapp.com/')
     }
     if (!req.session.code) {
         //generating 32 character lowercase hexadecimal random code
@@ -52,7 +51,7 @@ app.post('list-app-backbar.herokuapp.com/', (req, res) => {
     else {
         db[req.session.code].data.push(req.body.val)
         db[req.session.code].data.sort()
-        res.redirect('/')
+        res.redirect('list-app-backbar.herokuapp.com/')
     }
 })
 app.post('list-app-backbar.herokuapp.com/delete/:index', (req, res) => {
