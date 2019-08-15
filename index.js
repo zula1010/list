@@ -62,4 +62,4 @@ app.post('/delete/:index', (req, res) => {
     res.redirect('/')
 })
 
-app.listen(port, () => console.log("app is working on port " + port))
+app.listen(process.env.PORT || port, () => console.log("app is working on port " + port))
