@@ -12,10 +12,10 @@ app.use(session({ secret: "Julia" }));
 
 let db = {};
 
-app.get('list-app-backbar.herokuapp.com/', async (req, res) => {
+app.get('/', async (req, res) => {
     if (req.query.code) {
         req.session.code = req.query.code
-        res.redirect('list-app-backbar.herokuapp.com/')
+        res.redirect('/')
     }
     if (!req.session.code) {
         //generating 32 character lowercase hexadecimal random code
@@ -40,7 +40,7 @@ app.get('list-app-backbar.herokuapp.com/', async (req, res) => {
     await res.send(html)
 
 })
-app.post('list-app-backbar.herokuapp.com/', (req, res) => {
+app.post('/', (req, res) => {
 
     if (req.body.val == "") {
         res.send("Empty entry! to return <a href='/'>Click me!</a>")
@@ -51,14 +51,14 @@ app.post('list-app-backbar.herokuapp.com/', (req, res) => {
     else {
         db[req.session.code].data.push(req.body.val)
         db[req.session.code].data.sort()
-        res.redirect('list-app-backbar.herokuapp.com/')
+        res.redirect('/')
     }
 })
-app.post('list-app-backbar.herokuapp.com/delete/:index', (req, res) => {
+app.post('/delete/:index', (req, res) => {
     console.log("delete clicked")
     console.log(req.params.index)
     db[req.session.code].data.splice(req.params.index, 1)
-    res.redirect('list-app-backbar.herokuapp.com/')
+    res.redirect('/')
 })
 
 app.listen(port, () => console.log("app is working on port " + port))
