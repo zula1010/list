@@ -13,7 +13,7 @@ app.use(express.static(__dirname));
 
 let db = {};
 
-app.get('/', async (req, res) => {
+app.get('list-app-backbar.herokuapp.com/', async (req, res) => {
     if (req.query.code) {
         req.session.code = req.query.code
         res.redirect('/')
@@ -41,7 +41,7 @@ app.get('/', async (req, res) => {
     await res.send(html)
 
 })
-app.post('/', (req, res) => {
+app.post('list-app-backbar.herokuapp.com/', (req, res) => {
 
     if (req.body.val == "") {
         res.send("Empty entry! to return <a href='/'>Click me!</a>")
@@ -55,11 +55,11 @@ app.post('/', (req, res) => {
         res.redirect('/')
     }
 })
-app.post('/delete/:index', (req, res) => {
+app.post('list-app-backbar.herokuapp.com/delete/:index', (req, res) => {
     console.log("delete clicked")
     console.log(req.params.index)
     db[req.session.code].data.splice(req.params.index, 1)
-    res.redirect('/')
+    res.redirect('list-app-backbar.herokuapp.com/')
 })
 
 app.listen(port, () => console.log("app is working on port " + port))
